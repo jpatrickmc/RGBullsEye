@@ -38,45 +38,48 @@ struct ContentView: View {
     @State var guess: RGB
     @State var showScore: Bool = false
     
-  var body: some View {
-      
-      // target
-      VStack {
-          ColorCircle(rgb: game.target, size: 250)
-              
-          
-          if !showScore {
-              Text("R: ??? G: ??? B: ???")
-                  .padding()
-          } else {
-              Text(game.target.intString())
-                  .padding()
-          }
-          
-          // guess
-          ColorCircle(rgb: guess, size: 250)
-              
-          Text(guess.intString())
-              .padding()
-          
-          ColorSliderView(value: $guess.red, trackColor: .red)
-          ColorSliderView(value: $guess.green, trackColor: .green)
-          ColorSliderView(value: $guess.blue, trackColor: .blue)
-          Button("Hit Me!") {
-              showScore = true
-              game.check(guess: guess)
-          }
-          .alert(isPresented: $showScore) {
-              Alert(title: Text("Your Score"),
-                    message: Text(String(game.scoreRound)),
-                    dismissButton: .default(Text("OK"))
-                {
-                  game.startNewRound()
-                  guess = RGB()
-              })
-          }
-      }
-  }
+    var body: some View {
+        ZStack {
+            Color.element
+                .edgesIgnoringSafeArea(.all)
+            
+            // target
+            VStack {
+                ColorCircle(rgb: game.target, size: 250)
+                
+                if !showScore {
+                    Text("R: ??? G: ??? B: ???")
+                        .padding()
+                } else {
+                    Text(game.target.intString())
+                        .padding()
+                }
+                
+                // guess
+                ColorCircle(rgb: guess, size: 250)
+                
+                Text(guess.intString())
+                    .padding()
+                
+                ColorSliderView(value: $guess.red, trackColor: .red)
+                ColorSliderView(value: $guess.green, trackColor: .green)
+                ColorSliderView(value: $guess.blue, trackColor: .blue)
+                Button("Hit Me!") {
+                    showScore = true
+                    game.check(guess: guess)
+                }
+                .alert(isPresented: $showScore) {
+                    Alert(title: Text("Your Score"),
+                          message: Text(String(game.scoreRound)),
+                          dismissButton: .default(Text("OK"))
+                          {
+                        game.startNewRound()
+                        guess = RGB()
+                    })
+                }
+            }
+        }
+    }
 }
 
 struct ColorSliderView: View {
