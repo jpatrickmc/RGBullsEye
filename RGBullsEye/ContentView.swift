@@ -32,20 +32,6 @@
 
 import SwiftUI
 
-struct ColorSliderView: View {
-    @Binding var value: Double
-    var trackColor: Color
-    var body: some View {
-        HStack {
-            Text("0")
-            Slider(value: $value)
-                .accentColor(trackColor)
-            Text("255")
-        }
-        .padding(.horizontal)
-    }
-}
-
 struct ContentView: View {
     
     @State var game = Game()
@@ -54,8 +40,10 @@ struct ContentView: View {
     
   var body: some View {
       
+      // target
       VStack {
-          Color(rgbStruct: game.target)
+          ColorCircleView(rgb: game.target)
+              
           
           if !showScore {
               Text("R: ??? G: ??? B: ???")
@@ -65,7 +53,9 @@ struct ContentView: View {
                   .padding()
           }
           
-          Color(rgbStruct: guess)
+          // guess
+          ColorCircleView(rgb: guess)
+              
           Text(guess.intString())
               .padding()
           
@@ -87,6 +77,29 @@ struct ContentView: View {
           }
       }
   }
+}
+
+struct ColorSliderView: View {
+    @Binding var value: Double
+    var trackColor: Color
+    var body: some View {
+        HStack {
+            Text("0")
+            Slider(value: $value)
+                .accentColor(trackColor)
+            Text("255")
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct ColorCircleView: View {
+    let rgb: RGB
+    var body: some View {
+        Circle()
+            .fill(Color(rgbStruct: rgb))
+    }
+            
 }
 
 struct ContentView_Previews: PreviewProvider {
