@@ -32,69 +32,21 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    
-    @State var game = Game()
-    @State var guess: RGB
-    @State var showScore: Bool = false
-    
+struct ColorCircle: View {
+  let rgb: RGB
+  let size: CGFloat
+
   var body: some View {
-      
-      // target
-      VStack {
-          ColorCircle(rgb: game.target, size: 250)
-              
-          
-          if !showScore {
-              Text("R: ??? G: ??? B: ???")
-                  .padding()
-          } else {
-              Text(game.target.intString())
-                  .padding()
-          }
-          
-          // guess
-          ColorCircle(rgb: guess, size: 250)
-              
-          Text(guess.intString())
-              .padding()
-          
-          ColorSliderView(value: $guess.red, trackColor: .red)
-          ColorSliderView(value: $guess.green, trackColor: .green)
-          ColorSliderView(value: $guess.blue, trackColor: .blue)
-          Button("Hit Me!") {
-              showScore = true
-              game.check(guess: guess)
-          }
-          .alert(isPresented: $showScore) {
-              Alert(title: Text("Your Score"),
-                    message: Text(String(game.scoreRound)),
-                    dismissButton: .default(Text("OK"))
-                {
-                  game.startNewRound()
-                  guess = RGB()
-              })
-          }
-      }
+    Circle()
+      .fill(Color(red: rgb.red, green: rgb.green, blue: rgb.blue))
+      .frame(width: size, height: size)
   }
 }
 
-struct ColorSliderView: View {
-    @Binding var value: Double
-    var trackColor: Color
-    var body: some View {
-        HStack {
-            Text("0")
-            Slider(value: $value)
-                .accentColor(trackColor)
-            Text("255")
-        }
-        .padding(.horizontal)
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
+struct ColorCircle_Previews: PreviewProvider {
   static var previews: some View {
-      ContentView(guess: RGB())
+    ColorCircle(rgb: RGB(), size: 200)
+    .frame(width: 300, height: 300)
+    .previewLayout(.sizeThatFits)
   }
 }
